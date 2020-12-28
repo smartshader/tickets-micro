@@ -10,10 +10,10 @@ const PORT = "3000"
 const app = express();
 app.use(bodyParser.json())
 
-app.use('/api/users', currentUserRouter);
-app.use('/api/users', signUpRouter);
-app.use('/api/users', signInRouter);
-app.use('/api/users', signOutRouter);
+app.use(currentUserRouter);
+app.use(signUpRouter);
+app.use(signInRouter);
+app.use(signOutRouter);
 
 app.listen(PORT, () => {
     console.log(`⚡️[server]: Server is running at https://localhost:${PORT}`);
