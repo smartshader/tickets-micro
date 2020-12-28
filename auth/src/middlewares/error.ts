@@ -1,25 +1,13 @@
 import { Request , Response, NextFunction } from "express";
 import { StatusCodes } from "http-status-codes";
-import { RequestValidationError } from "../errors/request-validation-error";
-import { DatabaseConnectionError } from "../errors/database-connection-error";
+import { CustomError } from "../errors/custom-error";
 
 export const errorHandler = (err: Error, req: Request, res: Response, next: NextFunction) => {
-    if (err instanceof RequestValidationError) {
-        const formattedErrors = err.errors.map(error => {
-            return { message: error.msg, field: error.param };
-        });
-
-        return res.status(StatusCodes.BAD_REQUEST)
-            .send({ errors: formattedErrors });
-    }
-
-    if (err instanceof DatabaseConnectionError) {
-        return res.status(StatusCodes.INTERNAL_SERVER_ERROR)
-            .send({ errors: [{ message: err.reason }] });
+    if (err instanceof CustomError) {
+        return res.status(err.statusCode)
+            .send({errors: err.serializeError()});
     }
 
     res.status(StatusCodes.BAD_REQUEST)
-        .send({
-            errors: [{ message: 'Something went wrong' }]
-        });
+        .send({errors: [{message: 'Something went wrong'}]});
 };

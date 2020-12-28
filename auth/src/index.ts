@@ -5,6 +5,7 @@ import { signUpRouter } from "./routes/signup";
 import { signInRouter } from "./routes/signin";
 import { signOutRouter } from "./routes/signout";
 import { errorHandler } from "./middlewares/error";
+import { NotFoundError } from "./errors/not-found-error";
 
 const PORT = "3000"
 
@@ -15,6 +16,10 @@ app.use(currentUserRouter);
 app.use(signUpRouter);
 app.use(signInRouter);
 app.use(signOutRouter);
+
+app.all('*', () => {
+    throw new NotFoundError();
+});
 
 app.use(errorHandler);
 
