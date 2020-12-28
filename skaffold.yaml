@@ -8,7 +8,7 @@ build:
   local:
     push: false
   artifacts:
-    - image: smartshader/auth
+    - image: smartshader/auth-api
       context: auth
       docker:
         dockerfile: Dockerfile
